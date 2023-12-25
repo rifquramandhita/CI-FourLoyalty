@@ -8,3 +8,6 @@ use CodeIgniter\Router\RouteCollection;
 // $routes->get('/', 'Home::index');
 
 $routes->post('api/login', 'Api\AuthController::login');
+
+$routes->group('api', ['filter' => 'authFilter'], function ($routes) {
+});
