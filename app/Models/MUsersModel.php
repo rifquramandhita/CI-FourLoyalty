@@ -8,9 +8,9 @@ class MUsersModel extends Model
 {
     protected $table            = 'm_users';
     protected $primaryKey       = 'email';
-    protected $useAutoIncrement = true;
+    protected $useAutoIncrement = false;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = ['email', 'password', 'name', 'address', 'phone'];
 
