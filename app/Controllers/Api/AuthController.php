@@ -24,7 +24,7 @@ class AuthController extends BaseController
                 $jwt = new JWTCI4;
                 $token = $jwt->token();
 
-                return $this->response->setJSON(['token' => $token]);
+                return $this->response->setJSON(['success' => true, 'message' => 'Success', 'token' => $token]);
             } else {
                 return $this->response->setJSON(['success' => false, 'message' => 'Invalid email and password combination'])->setStatusCode(409);
             }
