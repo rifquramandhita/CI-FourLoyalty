@@ -22,7 +22,10 @@ class AuthController extends BaseController
         if ($user) {
             if (password_verify($this->request->getVar('password'), $user['password'])) {
                 $jwt = new JWTCI4;
-                $token = $jwt->token();
+                $userPayload = [
+                    'email' => $user['email']
+                ];
+                $token = $jwt->token($userPayload);
 
                 return $this->response->setJSON(['success' => true, 'message' => 'Success', 'token' => $token]);
             } else {

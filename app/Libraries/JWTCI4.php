@@ -46,14 +46,15 @@ class JWTCI4
         return $this;
     }
 
-    public function token()
+    public function token($user)
     {
         $payload = [
             'iss' => $this->iss,
             'iat' => $this->iat,
             'exp' => $this->exp,
             'nbf' => $this->nbf,
-            'jti' => $this->jti
+            'jti' => $this->jti,
+            'user' => $user
         ];
 
         return JWT::encode($payload, $this->key, 'HS256');
