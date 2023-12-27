@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
+use App\Libraries\JWTCI4;
 use App\Models\MUsersModel;
 use CodeIgniter\API\ResponseTrait;
 
@@ -47,7 +48,7 @@ class UsersController extends BaseController
     public function show($email)
     {
         $db = new MUsersModel();
-        $user = $db->where('email', $email)->first();
+        $user = $db->select('email, address, phone')->where('email', $email)->first();
         return $this->response->setJSON(['success' => true, 'message' => 'Success', 'data' => $user]);
     }
 
@@ -91,5 +92,14 @@ class UsersController extends BaseController
         $db->delete();
 
         return $this->response->setJSON(['sucess' => true, 'mesage' => 'Success']);
+    }
+
+    public function me()
+    {
+        $jwt = new JWTCI4;
+        $request = \Config\Services::request();
+        $token = $request->getServer('HTTP_AUTHORIZATION');
+        $payload = $jwt->decode($token);
+        return $this->show($payload->user->email);
     }
 }

@@ -97,4 +97,24 @@ class JWTCI4
 
         return $url;
     }
+
+    public function decode($token)
+    {
+
+        $token = explode(" ", $token);
+        if (!isset($token[0]) && $token[0] != 'Bearer') {
+            return ['success' => false, 'message' => 'Token Invalid'];
+        }
+
+        $bearerToken = $token[1];
+
+        try {
+            $decoded = JWT::decode($bearerToken, new Key($this->key, 'HS256'));
+
+            return $decoded;
+        } catch (\Exception $e) {
+
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
 }
