@@ -32,18 +32,9 @@ class CreateTableMCoupons extends Migration
                 'type' => 'BOOLEAN',
                 'default' => true,
             ],
-            'created_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
-            'deleted_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
+            'created_at datetime default current_timestamp',
+            'updated_at datetime default current_timestamp on update current_timestamp',
+            'deleted_at datetime null',
         ]);
 
         $this->forge->addKey('id', true);
