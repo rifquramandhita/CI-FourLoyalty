@@ -24,4 +24,11 @@ $routes->group('api', ['filter' => 'authFilter'], function ($routes) {
     $routes->get('coupons/(:num)', 'Api\CouponsController::show/$1');
     $routes->patch('coupons/(:num)', 'Api\CouponsController::update/$1');
     $routes->delete('coupons/(:num)', 'Api\CouponsController::delete/$1');
+
+    //couponsController
+    $routes->get('usercoupon', 'Api\UserCouponController::index');
+    $routes->post('usercoupon', 'Api\UserCouponController::create');
+    $routes->get('usercoupon/(:num)', 'Api\UserCouponController::show/$1');
+    $routes->patch('usercoupon/(:num)', 'Api\UserCouponController::update/$1');
+    $routes->delete('usercoupon/(:num)', 'Api\UserCouponController::delete/$1');
 });
