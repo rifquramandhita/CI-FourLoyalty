@@ -21,4 +21,13 @@ class GlobalLibrary
         }
         return $pass;
     }
+
+    public function getEmailFromJWT()
+    {
+        $jwt = new JWTCI4;
+        $request = \Config\Services::request();
+        $token = $request->getServer('HTTP_AUTHORIZATION');
+        $payload = $jwt->decode($token);
+        return $payload->user->email;
+    }
 }

@@ -95,4 +95,17 @@ class UserCouponController extends BaseController
 
         return $this->response->setJSON(['sucess' => true, 'mesage' => 'Success']);
     }
+
+    public function getByUser($email = null)
+    {
+        if ($email == null) {
+            $globalLib = new GlobalLibrary;
+            $email = $globalLib->getEmailFromJWT();
+        }
+
+        $db = new TUserCouponModel();
+        $data = $db->select('id, coupon_id, user_email, token, exp_at')->where('user_email', $email)->findAll();
+
+        return $this->response->setJSON(['success' => true, 'message' => 'Success', 'data' => $data]);
+    }
 }

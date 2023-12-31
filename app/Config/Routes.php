@@ -31,4 +31,6 @@ $routes->group('api', ['filter' => 'authFilter'], function ($routes) {
     $routes->get('usercoupon/(:num)', 'Api\UserCouponController::show/$1');
     $routes->patch('usercoupon/(:num)', 'Api\UserCouponController::update/$1');
     $routes->delete('usercoupon/(:num)', 'Api\UserCouponController::delete/$1');
+    $routes->get('usercoupon/getByUser/(:any)', 'Api\UserCouponController::getByUser/$1');
+    $routes->get('usercoupon/getByUser/', 'Api\UserCouponController::getByUser');
 });
