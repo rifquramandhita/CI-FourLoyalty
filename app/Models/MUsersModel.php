@@ -12,7 +12,7 @@ class MUsersModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ['email', 'password', 'name', 'address', 'phone'];
+    protected $allowedFields    = ['email', 'password', 'name', 'address', 'phone', 'point'];
 
     // Dates
     protected $useTimestamps = true;

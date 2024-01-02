@@ -48,7 +48,7 @@ class UsersController extends BaseController
     public function show($email)
     {
         $db = new MUsersModel();
-        $user = $db->select('email, name, address, phone')->where('email', $email)->first();
+        $user = $db->select('email, name, address, phone, point')->where('email', $email)->first();
         return $this->response->setJSON(['success' => true, 'message' => 'Success', 'data' => $user]);
     }
 
@@ -60,6 +60,7 @@ class UsersController extends BaseController
             'name' => 'permit_empty',
             'address' => 'permit_empty',
             'phone' => 'permit_empty',
+            'point' => 'permit_empty',
         ])) {
             return $this->response->setJSON(['success' => false, "message" => \Config\Services::validation()->getErrors()]);
         }
@@ -76,7 +77,8 @@ class UsersController extends BaseController
             'password' => $this->request->getVar('password') ? password_hash($this->request->getVar('password'), PASSWORD_DEFAULT) : $exist['password'],
             'name' => $this->request->getVar('name') ? $this->request->getVar('name') : $exist['name'],
             'address' => $this->request->getVar('address')  ? $this->request->getVar('address') : $exist['address'],
-            'phone' => $this->request->getVar('phone') ? $this->request->getVar('phone') : $exist['phone']
+            'phone' => $this->request->getVar('phone') ? $this->request->getVar('phone') : $exist['phone'],
+            'point' => $this->request->getVar('point') ? $this->request->getVar('point') : $exist['point']
         ];
 
         // $db = new UsersModel;
