@@ -48,7 +48,7 @@ class UsersController extends BaseController
     public function show($email)
     {
         $db = new MUsersModel();
-        $user = $db->select('email, address, phone')->where('email', $email)->first();
+        $user = $db->select('email, name, address, phone')->where('email', $email)->first();
         return $this->response->setJSON(['success' => true, 'message' => 'Success', 'data' => $user]);
     }
 
