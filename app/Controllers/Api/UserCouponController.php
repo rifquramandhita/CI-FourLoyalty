@@ -104,7 +104,7 @@ class UserCouponController extends BaseController
         }
 
         $db = new TUserCouponModel();
-        $data = $db->select('id, coupon_id, user_email, token, exp_at')->where('user_email', $email)->findAll();
+        $data = $db->select('t_usercoupon.id, t_usercoupon.coupon_id, t_usercoupon.user_email, t_usercoupon.token, t_usercoupon.exp_at, m_coupons.title, m_coupons.description, m_coupons.img_path')->where('t_usercoupon.user_email', $email)->join('m_coupons', 't_usercoupon.coupon_id = m_coupons.id')->where('m_coupons.is_active', '1')->findAll();
 
         return $this->response->setJSON(['success' => true, 'message' => 'Success', 'data' => $data]);
     }
