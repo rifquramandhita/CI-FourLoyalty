@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
+use App\Libraries\GlobalLibrary;
 use App\Models\MCouponModel;
 use CodeIgniter\API\ResponseTrait;
 
@@ -13,8 +14,11 @@ class CouponsController extends BaseController
 
     public function index()
     {
-        $db = new MCouponModel;
-        $data = $db->findAll();
+        $globalLib = new GlobalLibrary;
+        $email = $globalLib->getEmailFromJWT();
+
+        $db = new MCouponModel;;
+        $data = $db->select('m_coupons.*, (CASE WHEN A.user_email = \'' . $email . '\' THEN 1 ELSE 0 END) AS is_claimed')->join('t_usercoupon as A', 'A.coupon_id = m_coupons.id', 'left')->where('is_active', '1')->findAll();
         return $this->response->setJSON(['success' => true, 'message' => 'Success', 'data' => $data]);
     }
 
