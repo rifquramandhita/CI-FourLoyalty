@@ -25,9 +25,14 @@ class UserCouponController extends BaseController
     {
         if (!$this->validate([
             'coupon_id'         => 'required',
-            'user_email'   => 'required',
         ])) {
             return $this->response->setJSON(['success' => false, 'data' => null, "message" => \Config\Services::validation()->getErrors()]);
+        }
+
+        $email = $this->request->getVar('user_email');
+        if ($email == null) {
+            $globalLib = new GlobalLibrary;
+            $email = $globalLib->getEmailFromJWT();
         }
 
         $globalLib = new GlobalLibrary;
@@ -38,7 +43,7 @@ class UserCouponController extends BaseController
 
         $insert = [
             'coupon_id' => $this->request->getVar('coupon_id'),
-            'user_email' => $this->request->getVar('user_email'),
+            'user_email' => $email,
             'token' => $token,
             'exp_at' => $exp_at->format('Y-m-d H:i:s'),
         ];
@@ -46,7 +51,7 @@ class UserCouponController extends BaseController
         $db = new TUserCouponModel;
         $save  = $db->insert($insert);
 
-        return $this->setResponseFormat('json')->respondCreated(['sucess' => true, 'mesage' => 'Success']);
+        return $this->setResponseFormat('json')->respondCreated(['success' => true, 'message' => 'Success']);
     }
 
     public function show($id)
