@@ -18,7 +18,7 @@ class CouponsController extends BaseController
         $email = $globalLib->getEmailFromJWT();
 
         $db = new MCouponModel;;
-        $data = $db->select('m_coupons.*, (CASE WHEN A.user_email = \'' . $email . '\' THEN 1 ELSE 0 END) AS is_claimed')->join('t_usercoupon as A', 'A.coupon_id = m_coupons.id', 'left')->where('is_active', '1')->findAll();
+        $data = $db->select('m_coupons.*, (CASE WHEN A.user_email = \'' . $email . '\' THEN 1 ELSE 0 END) AS is_claimed')->join('(SELECT * FROM t_usercoupon WHERE user_email = \'' . $email . '\') A', 'A.coupon_id = m_coupons.id', 'left')->where('is_active', '1')->findAll();
         return $this->response->setJSON(['success' => true, 'message' => 'Success', 'data' => $data]);
     }
 
