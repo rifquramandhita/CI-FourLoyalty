@@ -4,6 +4,8 @@ namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
 use App\Libraries\GlobalLibrary;
+use App\Models\MCouponModel;
+use App\Models\MUsersModel;
 use App\Models\TUserCouponModel;
 use CodeIgniter\API\ResponseTrait;
 use DateInterval;
@@ -28,11 +30,19 @@ class UserCouponController extends BaseController
         ])) {
             return $this->response->setJSON(['success' => false, 'data' => null, "message" => \Config\Services::validation()->getErrors()]);
         }
-
+        $couponId = $this->request->getVar('coupon_id');
         $email = $this->request->getVar('user_email');
         if ($email == null) {
             $globalLib = new GlobalLibrary;
             $email = $globalLib->getEmailFromJWT();
+        }
+
+        $dbMUsers = new MUsersModel();
+        $user = $dbMUsers->where('email', $email)->findColumn('point');
+        $dbMCoupons = new MCouponModel();
+        $coupon = $dbMCoupons->where('id', $couponId)->findColumn('fee');
+        if ($user[0] < $coupon[0]) {
+            return $this->response->setJSON(['success' => false, "message" => 'You don\'t have enough points to claim this coupon']);
         }
 
         $globalLib = new GlobalLibrary;
@@ -42,7 +52,7 @@ class UserCouponController extends BaseController
         $exp_at->add(new DateInterval('P15D'));
 
         $insert = [
-            'coupon_id' => $this->request->getVar('coupon_id'),
+            'coupon_id' => $couponId,
             'user_email' => $email,
             'token' => $token,
             'exp_at' => $exp_at->format('Y-m-d H:i:s'),
@@ -50,6 +60,12 @@ class UserCouponController extends BaseController
 
         $db = new TUserCouponModel;
         $save  = $db->insert($insert);
+
+        $userNewData = [
+            'email' => $email,
+            'point' => $user[0] - $coupon[0],
+        ];
+        $dbMUsers->save($userNewData);
 
         return $this->setResponseFormat('json')->respondCreated(['success' => true, 'message' => 'Success']);
     }
