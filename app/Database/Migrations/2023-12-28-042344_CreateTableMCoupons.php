@@ -28,6 +28,11 @@ class CreateTableMCoupons extends Migration
                 'constraint' => 255,
                 'null' => true,
             ],
+            'fee' => [
+                'type' => 'INT',
+                'constrain' => 5,
+                'null' => false,
+            ],
             'is_active' => [
                 'type' => 'BOOLEAN',
                 'default' => true,
