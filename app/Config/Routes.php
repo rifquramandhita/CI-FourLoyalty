@@ -12,6 +12,7 @@ $routes->post('api/login', 'Api\AuthController::login');
 $routes->group('api', ['filter' => 'authFilter'], function ($routes) {
     //usersController
     $routes->get('users/me', 'Api\UsersController::me');
+    $routes->get('users/point', 'Api\UsersController::getMyPoint');
     $routes->get('users', 'Api\UsersController::index');
     $routes->post('users', 'Api\UsersController::create');
     $routes->get('users/(:any)', 'Api\UsersController::show/$1');

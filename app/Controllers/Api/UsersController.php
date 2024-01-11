@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
+use App\Libraries\GlobalLibrary;
 use App\Libraries\JWTCI4;
 use App\Models\MUsersModel;
 use CodeIgniter\API\ResponseTrait;
@@ -103,5 +104,14 @@ class UsersController extends BaseController
         $token = $request->getServer('HTTP_AUTHORIZATION');
         $payload = $jwt->decode($token);
         return $this->show($payload->user->email);
+    }
+
+    public function getMyPoint()
+    {
+        $global = new GlobalLibrary();
+        $email = $global->getEmailFromJWT();
+        $dbMUser = new MUsersModel();
+        $user = $dbMUser->where('email', $email)->findColumn('point');
+        return $this->response->setJSON(['success' => true, 'message' => 'Success', 'data' => $user[0]]);
     }
 }
